@@ -3,8 +3,8 @@ A simple UPnP library for Java
 
 
 ## Maven/Gradle
-You can download upnp4j from my maven repo: `https://notom3ga.me/repo`
-under the group `me.notom3ga`, artifact `upnp4j` and version `1.0`.
+You can download upnp4j from maven central
+under the group `dev.omega24`, artifact `upnp4j` and version `1.0`.
 
 ## Usage
 To open port 25565 with TCP use:

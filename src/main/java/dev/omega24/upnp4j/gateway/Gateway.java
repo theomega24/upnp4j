@@ -1,6 +1,6 @@
-package me.notom3ga.upnp4j.gateway;
+package dev.omega24.upnp4j.gateway;
 
-import me.notom3ga.upnp4j.util.Protocol;
+import dev.omega24.upnp4j.util.Protocol;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -16,12 +16,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+/**
+ * A gateway that we can connect to
+ */
 public class Gateway {
     private final Inet4Address ip;
     private String serviceType;
     private String controlUrl;
 
-    public Gateway(byte[] data, Inet4Address ip) throws Exception {
+    Gateway(byte[] data, Inet4Address ip) throws Exception {
         this.ip = ip;
         String location = null;
         StringTokenizer tokenizer = new StringTokenizer(new String(data), "\n");
@@ -120,10 +123,11 @@ public class Gateway {
         return ret;
     }
 
-    public String getLocalIP() {
-        return ip.getHostAddress();
-    }
-
+    /**
+     * Gets the external IP of the router
+     *
+     * @return The external IP of the router
+     */
     public String getExternalIP() {
         try {
             Map<String, String> r = command("GetExternalIPAddress", null);
@@ -133,6 +137,22 @@ public class Gateway {
         }
     }
 
+    /**
+     * Gets the local IP of the router
+     *
+     * @return The local IP of the router
+     */
+    public String getLocalIP() {
+        return ip.getHostAddress();
+    }
+
+    /**
+     * Opens a port using UPnP
+     *
+     * @param port A port in the range of 1-65535
+     * @param protocol The protocol to open the port with
+     * @return True if the port was able to open
+     */
     public boolean openPort(int port, Protocol protocol) {
         if (port < 0 || port > 65535) {
             throw new IllegalArgumentException("Invalid port");
@@ -154,6 +174,13 @@ public class Gateway {
         }
     }
 
+    /**
+     * Closes a port using UPnP
+     *
+     * @param port A port in the range of 1-65535
+     * @param protocol The protocol to close the port with
+     * @return True if the port was able to close
+     */
     public boolean closePort(int port, Protocol protocol) {
         if (port < 0 || port > 65535) {
             throw new IllegalArgumentException("Invalid port");
@@ -170,6 +197,13 @@ public class Gateway {
         }
     }
 
+    /**
+     * Checks if a port is open
+     *
+     * @param port A port in the range of 1-65535
+     * @param protocol The protocol to check the port with
+     * @return True if the port is open
+     */
     public boolean isOpen(int port, Protocol protocol) {
         if (port < 0 || port > 65535) {
             throw new IllegalArgumentException("Invalid port");

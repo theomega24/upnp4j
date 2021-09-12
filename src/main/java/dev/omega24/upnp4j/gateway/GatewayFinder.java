@@ -1,10 +1,13 @@
-package me.notom3ga.upnp4j.gateway;
+package dev.omega24.upnp4j.gateway;
 
 import java.io.IOException;
 import java.net.*;
 import java.util.Enumeration;
 import java.util.LinkedList;
 
+/**
+ * Searches for a gateway to connect to
+ */
 public abstract class GatewayFinder {
     private static final String[] SEARCH_MESSAGES;
 
@@ -46,6 +49,9 @@ public abstract class GatewayFinder {
 
     private final LinkedList<GatewayListener> listeners = new LinkedList<>();
 
+    /**
+     * Create a new {@link GatewayFinder}
+     */
     public GatewayFinder() {
         for (Inet4Address ip : getLocalIPs()) {
             for (String request : SEARCH_MESSAGES) {
@@ -56,6 +62,11 @@ public abstract class GatewayFinder {
         }
     }
 
+    /**
+     * Checks if we're still searching for a gateway
+     *
+     * @return True if we're still searching for a gateway
+     */
     public boolean isSearching() {
         for (GatewayListener listener : listeners) {
             if (listener.isAlive()) {
@@ -66,6 +77,11 @@ public abstract class GatewayFinder {
         return false;
     }
 
+    /**
+     * Called when a gateway is found
+     *
+     * @param gateway The gateway that was found
+     */
     public abstract void onGatewayFind(Gateway gateway);
 
     private class GatewayListener extends Thread {
